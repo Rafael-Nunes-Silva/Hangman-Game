@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "Hangman Game.h"
 
@@ -34,7 +35,7 @@ char GetUserGuess() {
     char c = ' ';
     printf("Your guess: ");
     scanf(" %c", &c);
-    UpperChar(&c);
+    c = toupper(c);
 
     int miss = 0;
     for (int i = 0; i < strlen(secretWord); i++) {
@@ -48,22 +49,6 @@ char GetUserGuess() {
     if (miss==1) misses++;
 
     return c;
-}
-void UpperChar(char* c) {
-    for (int i = 0; i < strlen(alphabet); i += 2) {
-        if (*c == alphabet[i]) {
-            *c = alphabet[i + 1];
-            break;
-        }
-    }
-}
-void LowerChar(char* c) {
-    for (int i = 1; i < strlen(alphabet); i += 2) {
-        if (*c == alphabet[i]) {
-            *c = alphabet[i - 1];
-            break;
-        }
-    }
 }
 
 void UpdateConsole(int clear) {
@@ -94,7 +79,7 @@ void UpdateConsole(int clear) {
 void GetRandomWord() {
     FILE* file = fopen("words.txt", "r");
     if (file == 0) {
-        printf("File 'words.txt' not found in the main directory");
+        printf("File 'Words.txt' not found in the main directory");
         return 1;
     }
     int totalWords = 0;
@@ -104,7 +89,7 @@ void GetRandomWord() {
     fclose(file);
 
     for (int i = 0; i < strlen(secretWord); i++)
-        UpperChar(&secretWord[i]);
+        secretWord[i] = toupper(secretWord[i]);
 }
 void AddWord() {
     char newWord[26];
@@ -112,8 +97,7 @@ void AddWord() {
     scanf(" %s", &newWord);
     if (strlen(newWord) <= 0) return 0;
     for (int i = 0; i < strlen(newWord); i++) {
-        if (i == 0) UpperChar(&newWord[i]);
-        else LowerChar(&newWord[i]);
+        newWord[i] = (i == 0) ? toupper(newWord[i]) : tolower(newWord[i]);
     }
 
     FILE* file = fopen("Words.txt", "r+");
