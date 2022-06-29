@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +28,15 @@ int main() {
     } while (!Won() && !Lost());
 
     AddWord();
+
+	printf("Wanna play again? (Y) (N)\n");
+	char restart = ' ';
+	scanf(" %c", &restart);
+	restart = toupper(restart);
+	if (toupper(restart) == 'Y') {
+		system("cls");
+		main();
+	}
 
     return 0;
 }
